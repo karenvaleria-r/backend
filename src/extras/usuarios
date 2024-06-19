@@ -1,0 +1,35 @@
+
+{
+    "userType": "coach",
+    "fullName": "Juan Perez",
+    "rut": "98765432-1",
+    "region": "Metropolitana",
+    "email": "juanperez@example.com",
+    "password": "securepassword",
+    "gender": "male",
+    "birthdate": "1985-05-15",
+    "avatar": "url-to-avatar",
+    "specialization": "Coaching de negocios",
+    "experience": "10 años",
+    "certification": "Certificación Internacional de Coaching",
+    "formation": "MBA en Negocios",
+    "disponibility": "Lunes a Viernes",
+    "descriptionCoach": "Soy un coach especializado en mejorar el rendimiento de las empresas."
+}
+
+
+  
+{   "userType": "pyme",
+    "fullName": "Empresa ABC",
+    "rut": "12345678-9",
+    "region": "Metropolitana",
+    "email": "empresa@example.com",
+    "password": "securepassword",
+    "gender": "none",
+    "birthdate": "2000-01-01",
+    "avatar": "url-to-avatar",
+    "nameCompany": "Empresa ABC Ltda",
+    "improvement": ["Marketing", "Ventas"],
+    "descriptionPyme": "Somos una empresa dedicada a la comercialización de productos tecnológicos."
+}
+  

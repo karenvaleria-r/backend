@@ -61,4 +61,4 @@ const agregarComentario = async (req, res) => {
   }
 };
 
-module.exports = agregarComentario;
+module.exports = {agregarComentario};

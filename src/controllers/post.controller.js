@@ -50,4 +50,66 @@ const crearPost = async (req, res) => {
   }
 };
 
-module.exports = crearPost;
+// Controlador para editar un post
+const editarPost = async (req, res) => {
+  const { postId } = req.params;
+  const { title, content, pymeId } = req.body;
+
+  // Validar que los campos no estén vacíos
+  if (!title || !content || !pymeId) {
+    return res.status(400).json({
+      message: "Todos los campos son obligatorios",
+      status: 400,
+      error: true,
+    });
+  }
+
+  try {
+    // Verificar que el post exista
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({
+        message: "Post no encontrado",
+        status: 404,
+        error: true,
+      });
+    }
+
+    // Verificar que la Pyme exista
+    const pyme = await Pyme.findById(pymeId);
+    if (!pyme) {
+      return res.status(404).json({
+        message: "Pyme no encontrada",
+        status: 404,
+        error: true,
+      });
+    }
+
+    // Actualizar el post
+    post.title = title;
+    post.content = content;
+    post.pymeId = pymeId;
+
+    const postActualizado = await post.save();
+
+    res.status(200).json({
+      message: "Post actualizado con éxito",
+      status: 200,
+      error: false,
+      data: postActualizado,
+    });
+  } catch (error) {
+    console.error("Error al editar el post:", error); // Log detallado del error
+    res.status(500).json({
+      message: "Error en el servidor al intentar editar el post",
+      status: 500,
+      error: true,
+      details: error.message, // Añadir detalles del error al response
+    });
+  }
+};
+
+module.exports = {
+  crearPost,
+  editarPost
+};

@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Post = require("../models/post.model");
 const Pyme = require("../models/user.pyme.model");
 
@@ -29,7 +30,7 @@ const crearPost = async (req, res) => {
     const nuevoPost = new Post({
       title,
       content,
-      pymeId
+      pymeId,
     });
 
     const postCreado = await nuevoPost.save();
@@ -59,6 +60,15 @@ const editarPost = async (req, res) => {
   if (!title || !content || !pymeId) {
     return res.status(400).json({
       message: "Todos los campos son obligatorios",
+      status: 400,
+      error: true,
+    });
+  }
+
+  // Validar que postId es un ObjectId válido
+  if (!mongoose.Types.ObjectId.isValid(postId)) {
+    return res.status(400).json({
+      message: "ID de post no válido",
       status: 400,
       error: true,
     });
@@ -142,5 +152,5 @@ const eliminarPost = async (req, res) => {
 module.exports = {
   crearPost,
   editarPost,
-  eliminarPost
+  eliminarPost,
 };

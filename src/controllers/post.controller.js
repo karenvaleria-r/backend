@@ -56,15 +56,6 @@ const editarPost = async (req, res) => {
   const { postId } = req.params;
   const { title, content, pymeId } = req.body;
 
-  // Validar que los campos no estén vacíos
-  if (!title || !content || !pymeId) {
-    return res.status(400).json({
-      message: "Todos los campos son obligatorios",
-      status: 400,
-      error: true,
-    });
-  }
-
   // Validar que postId es un ObjectId válido
   if (!mongoose.Types.ObjectId.isValid(postId)) {
     return res.status(400).json({
@@ -85,20 +76,22 @@ const editarPost = async (req, res) => {
       });
     }
 
-    // Verificar que la Pyme exista
-    const pyme = await Pyme.findById(pymeId);
-    if (!pyme) {
-      return res.status(404).json({
-        message: "Pyme no encontrada",
-        status: 404,
-        error: true,
-      });
+    // Verificar que la Pyme exista si pymeId está presente
+    if (pymeId) {
+      const pyme = await Pyme.findById(pymeId);
+      if (!pyme) {
+        return res.status(404).json({
+          message: "Pyme no encontrada",
+          status: 404,
+          error: true,
+        });
+      }
+      post.pymeId = pymeId;
     }
 
-    // Actualizar el post
-    post.title = title;
-    post.content = content;
-    post.pymeId = pymeId;
+    // Actualizar solo los campos proporcionados
+    if (title) post.title = title;
+    if (content) post.content = content;
 
     const postActualizado = await post.save();
 

@@ -109,7 +109,38 @@ const editarPost = async (req, res) => {
   }
 };
 
+// Controlador para eliminar un post
+const eliminarPost = async (req, res) => {
+  const { postId } = req.params;
+
+  try {
+    const postEliminado = await Post.findByIdAndDelete(postId);
+
+    if (!postEliminado) {
+      return res.status(404).json({
+        message: "Post no encontrado",
+        status: 404,
+        error: true,
+      });
+    }
+
+    res.status(200).json({
+      message: "Post eliminado con éxito",
+      status: 200,
+      error: false,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error en el servidor al intentar eliminar el post",
+      status: 500,
+      error: true,
+    });
+    console.log(error);
+  }
+};
+
 module.exports = {
   crearPost,
-  editarPost
+  editarPost,
+  eliminarPost
 };

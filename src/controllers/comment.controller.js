@@ -61,4 +61,49 @@ const agregarComentario = async (req, res) => {
   }
 };
 
-module.exports = {agregarComentario};
+// Controlador para eliminar un comentario
+const eliminarComentario = async (req, res) => {
+  const { postId, commentId } = req.params;
+
+  try {
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({
+        message: "Post no encontrado",
+        status: 404,
+        error: true,
+      });
+    }
+
+    const comentarioIndex = post.comments.findIndex(comment => comment._id.equals(commentId));
+    if (comentarioIndex === -1) {
+      return res.status(404).json({
+        message: "Comentario no encontrado",
+        status: 404,
+        error: true,
+      });
+    }
+
+    post.comments.splice(comentarioIndex, 1);
+    await post.save();
+
+    res.status(200).json({
+      message: "Comentario eliminado con éxito",
+      status: 200,
+      error: false,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error en el servidor al intentar eliminar el comentario",
+      status: 500,
+      error: true,
+    });
+    console.log(error);
+  }
+};
+
+module.exports = {
+  agregarComentario,
+  eliminarComentario,
+};
